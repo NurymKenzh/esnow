@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    CoordinateSystems
+{% endblock %}
+{% block body %}
+    <h3>
+        CoordinateSystems
+    </h3>
+    <a href="{% url 'coordinates:coordinatesystem_create' %}">
+        Создать CoordinateSystem
+    </a>
+    {% if coordinatesystems %}
+    <ul>
+        {% for coordinatesystem in coordinatesystems %}
+        <li>
+            <!-- Detail -->
+            <a href="{% url 'coordinates:coordinatesystem_detail' coordinatesystem.id %}" class="btn btn-default btn-sm">
+                {{ coordinatesystem.name }}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+
+            <!-- Update -->
+            <a href="{% url 'coordinates:coordinatesystem_update' coordinatesystem.id %}" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+
+            <!-- Delete -->
+            <form action="{% url 'coordinates:coordinatesystem_delete' coordinatesystem.id %}" method="post" style="display: inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="coordinatesystem_id" value="{{ coordinatesystem.id }}" />
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>
+        Нет данных
+    </h3>
+    {% endif %}
+{% endblock %}

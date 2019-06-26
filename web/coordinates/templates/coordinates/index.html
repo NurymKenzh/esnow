@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+    Coordinates
+{% endblock %}
+{% block body %}
+    <h3>
+        Coordinates
+    </h3>
+    <ul>
+        <li>
+            <a href="{% url 'coordinates:coordinatesystem' %}">
+                CoordinateSystems
+            </a>
+        </li>
+    </ul>
+{% endblock %}
