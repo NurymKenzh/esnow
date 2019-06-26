@@ -1,7 +1,8 @@
 version: "3"
 
 services:
-
+  db:
+    image: postgres
   web:
     build: ./web/
     ports:
@@ -10,3 +11,5 @@ services:
       - ./web:/code
 #    command: django-admin startproject esnow .
     command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
