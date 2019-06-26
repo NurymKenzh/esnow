@@ -18,6 +18,10 @@ from django.urls import path, include
 from django.conf.urls import url
 
 urlpatterns = [
+    url(r'^', include('home.urls')),
     path('admin/', admin.site.urls),
+    path('users/', include('users.urls', namespace='users')),
     path('coordinates/', include('coordinates.urls')),
+    path('modis/', include('modis.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

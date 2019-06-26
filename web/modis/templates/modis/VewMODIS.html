@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}
+    Просмотр снимков
+{% endblock %}
+{% block body %}
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+    <style>
+        .map {
+            width: 100%;
+        }
+    </style>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <h3>
+        Просмотр снимков
+    </h3>
+    <label>DataSet:</label>
+    <select id="dataset" onchange="ChangeDataSet()">
+        {% for dataset in datasets %}
+            <option value="{{ dataset.id }}">{{ dataset.name }}</option>
+        {% endfor %}
+    </select>
+    <label>Год:</label>
+    <select id="year" onchange="ChangeYear()">
+    </select>
+    <label>День (в году):</label>
+    <select id="day_year" onchange="ChangeLayer()">
+    </select>
+    <div id="map" class="map"></div>
+
+    <script type="text/javascript">
+        var geoserver_url = "{{ geoserver_url }}",
+            geoserver_workspace_name = "{{ geoserver_workspace_name }}";
+
+        var Source_MODIS = new ol.source.TileWMS({
+            url: geoserver_url + '/geoserver/' + geoserver_workspace_name + '/wms?',
+            params: {
+                'LAYERS': geoserver_workspace_name + ':_',
+                'VERSION': '1.1.1',
+                'FORMAT': 'image/png',
+                'TILED': true
+            },
+            serverType: 'geoserver'
+        });
+        var Layer_MODIS = new ol.layer.Tile({
+            source: Source_MODIS
+        });
+        Layer_MODIS.setOpacity(0.80);
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }),
+                Layer_MODIS],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([66.902, 48.714]),
+                zoom: 5
+            })});
+
+        function ChangeDataSet(){
+            $.ajax({
+                url: "/modis/getyears/",
+                data: { "dataset_id": $('#dataset').val() },
+                success: function (data) {
+                    var $dropdown = $("#year");
+                    $dropdown.find('option').remove();
+                    $.each(data.years, function () {
+                        $dropdown.append($("<option />").val(this).text(this));
+                    });
+                    ChangeYear();
+                },
+                error: function () {
+                    alert("Error")
+                }
+            });
+        }
+
+        function ChangeYear(){
+            $.ajax({
+                url: "/modis/getdaysyears/",
+                data: {
+                    "dataset_id": $('#dataset').val(),
+                    "year": $('#year').val()},
+                success: function (data) {
+                    var $dropdown = $("#day_year");
+                    $dropdown.find('option').remove();
+                    $.each(data.daysyears, function () {
+                        $dropdown.append($("<option />").val(this).text(this));
+                    });
+                    ChangeLayer();
+                },
+                error: function () {
+                    alert("Error")
+                }
+            });
+        }
+
+        function ChangeLayer(){
+            var layer_name = $('#dataset option:selected').text()
+                + "_A"
+                + $('#year').val()
+                + $('#day_year').val();
+            $('#test').val(layer_name);
+            var Source_MODIS_New = new ol.source.TileWMS({
+                url: geoserver_url + '/geoserver/' + geoserver_workspace_name + '/wms?',
+                params: {
+                    'LAYERS': geoserver_workspace_name + ':' + layer_name,
+                    'VERSION': '1.1.1',
+                    'FORMAT': 'image/png',
+                    'TILED': true
+                },
+                serverType: 'geoserver'
+                });
+            Layer_MODIS.setSource(Source_MODIS_New);
+        }
+
+        $( document ).ready(function() {
+            ChangeDataSet();
+        });
+    </script>
+{% endblock %}

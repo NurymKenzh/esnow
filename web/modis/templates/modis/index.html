@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+    Modis
+{% endblock %}
+{% block body %}
+    <h3>
+        Modis
+    </h3>
+    <ul>
+        <li>
+            <a href="{% url 'modis:source' %}">
+                Sources
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'modis:product' %}">
+                Products
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'modis:dataset' %}">
+                DataSets
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'modis:span' %}">
+                Spans
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'modis:getmodis' %}">
+                Получить снимки MODIS и опубликовать их
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'modis:viewmodis' %}">
+                Просмотр снимков
+            </a>
+        </li>
+    </ul>
+{% endblock %}

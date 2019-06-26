@@ -1,0 +1,13 @@
+modis_user = "caesarmod"
+modis_password = "caesar023Earthdata"
+modis_first_date = "2000-02-26" # -1
+# modis_first_date = "2001-01-01"
+modis_folder_download = r"D:\Documents\New\MODIS"
+modis_filename_mosaic = ".tif"
+modis_projection = "4326"
+geoserver_workspace_folder = r"D:\GeoServer 2.13.4\data_dir\data\esnow"
+geoserver_workspace_name = r"esnow"
+geoserver_user = "admin"
+geoserver_password = "geoserver"
+geoserver_url = "http://localhost:8080"
+geoserver_projection = "EPSG:3857"

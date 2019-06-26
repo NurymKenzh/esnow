@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}
+    DataSet
+{% endblock %}
+{% block body %}
+    <h1>
+        {{ dataset.product.source.name }} - {{ dataset.product.name }} - {{ dataset.name }} ({{ dataset.index }})
+    </h1>
+{% endblock %}

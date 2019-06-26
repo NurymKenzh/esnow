@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Products
+{% endblock %}
+{% block body %}
+    <h3>
+        Products
+    </h3>
+    <a href="{% url 'modis:product_create' %}">
+        Создать Product
+    </a>
+    {% if products %}
+    <ul>
+        {% for product in products %}
+        <li>
+            <!-- Detail -->
+            <a href="{% url 'modis:product_detail' product.id %}" class="btn btn-default btn-sm">
+                {{ product.name }}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+
+            <!-- Update -->
+            <a href="{% url 'modis:product_update' product.id %}" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+
+            <!-- Delete -->
+            <form action="{% url 'modis:product_delete' product.id %}" method="post" style="display: inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>
+        Нет данных
+    </h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    DataSets
+{% endblock %}
+{% block body %}
+    <h3>
+        DataSets
+    </h3>
+    <a href="{% url 'modis:dataset_create' %}">
+        Создать DataSet
+    </a>
+    {% if datasets %}
+    <ul>
+        {% for dataset in datasets %}
+        <li>
+            <!-- Detail -->
+            <a href="{% url 'modis:dataset_detail' dataset.id %}" class="btn btn-default btn-sm">
+                {{ dataset.name }}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+
+            <!-- Update -->
+            <a href="{% url 'modis:dataset_update' dataset.id %}" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+
+            <!-- Delete -->
+            <form action="{% url 'modis:dataset_delete' dataset.id %}" method="post" style="display: inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="dataset_id" value="{{ dataset.id }}" />
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>
+        Нет данных
+    </h3>
+    {% endif %}
+{% endblock %}

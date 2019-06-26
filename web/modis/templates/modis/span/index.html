@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Spans
+{% endblock %}
+{% block body %}
+    <h3>
+        Spans
+    </h3>
+    <a href="{% url 'modis:span_create' %}">
+        Создать Span
+    </a>
+    {% if spans %}
+    <ul>
+        {% for span in spans %}
+        <li>
+            <!-- Detail -->
+            <a href="{% url 'modis:span_detail' span.id %}" class="btn btn-default btn-sm">
+                {{ span.name }}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+
+            <!-- Update -->
+            <a href="{% url 'modis:span_update' span.id %}" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+
+            <!-- Delete -->
+            <form action="{% url 'modis:span_delete' span.id %}" method="post" style="display: inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="span_id" value="{{ span.id }}" />
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>
+        Нет данных
+    </h3>
+    {% endif %}
+{% endblock %}

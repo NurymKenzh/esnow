@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Sources
+{% endblock %}
+{% block body %}
+    <h3>
+        Sources
+    </h3>
+    <a href="{% url 'modis:source_create' %}">
+        Создать Source
+    </a>
+    {% if sources %}
+    <ul>
+        {% for source in sources %}
+        <li>
+            <!-- Detail -->
+            <a href="{% url 'modis:source_detail' source.id %}" class="btn btn-default btn-sm">
+                {{ source.name }}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+
+            <!-- Update -->
+            <a href="{% url 'modis:source_update' source.id %}" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+
+            <!-- Delete -->
+            <form action="{% url 'modis:source_delete' source.id %}" method="post" style="display: inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="source_id" value="{{ source.id }}" />
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>
+        Нет данных
+    </h3>
+    {% endif %}
+{% endblock %}
